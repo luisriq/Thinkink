@@ -4,78 +4,103 @@
     android:layout_height="match_parent"
     android:background="#ffffff">
 
-    <FrameLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:layout_width="1200dp"
-            android:layout_height="80dp"
-            android:id="@+id/imageFondoLogo"
-            android:background="@color/colorPrimary"
-            android:layout_gravity="center_horizontal|top" />
-
-        <ImageView
-            android:layout_width="250dp"
-            android:layout_height="200dp"
-            android:paddingTop="15dp"
-            android:id="@+id/imageView"
-            android:layout_gravity="center_horizontal|top"
-            android:src="@drawable/logocontitulo" />
-
-    </FrameLayout>
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView2"
+        android:fillViewport="true">
 
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/textViewLoginTitle"
-            android:layout_gravity="center"
-            android:text="@string/loginTitle" />
-
-        <EditText
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:theme="@style/Theme.App.Base"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:hint="@string/emailHint"
-            android:ems="10"
-            android:id="@+id/editTextEmail"
-            android:layout_gravity="center_horizontal" />
+            android:layout_height="match_parent">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/Theme.App.Base"
-            android:paddingTop="30dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:inputType="textPassword"
-            android:hint="@string/passwordHint"
-            android:ems="10"
-            android:id="@+id/editTextPassword"
-            android:layout_gravity="center_horizontal" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="1200dp"
-            android:layout_height="30dp"
-            android:id="@+id/imageBottom"
-            android:background="@color/colorPrimary"
-            android:layout_gravity="center_horizontal|bottom" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:id="@+id/imageFondoLogo"
+                    android:background="@color/colorPrimary"
+                    android:layout_gravity="center_horizontal|top" />
 
-        <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/scrollView2" />
-    </LinearLayout>
+                <ImageView
+                    android:layout_width="250dp"
+                    android:layout_height="200dp"
+                    android:paddingTop="15dp"
+                    android:id="@+id/imageView"
+                    android:layout_gravity="center_horizontal|top"
+                    android:src="@drawable/logocontitulo" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/textViewLoginTitle"
+                    android:layout_gravity="center"
+                    android:text="@string/loginTitle"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:theme="@style/Theme.App.Base"
+                    android:hint="@string/emailHint"
+                    android:ems="10"
+                    android:id="@+id/editTextEmail"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@+id/textViewLoginTitle"
+                    android:layout_alignLeft="@+id/editTextPassword"
+                    android:layout_alignStart="@+id/editTextPassword"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/Theme.App.Base"
+                    android:paddingTop="30dp"
+                    android:inputType="textPassword"
+                    android:hint="@string/passwordHint"
+                    android:ems="10"
+                    android:id="@+id/editTextPassword"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@+id/editTextEmail"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp" />
+                <!-- View - Filler - Rellena el espacio entre editText y imageView-->
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:id="@+id/imageBottom"
+                    android:background="@color/colorPrimary"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:baselineAlignBottom="false"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_weight="0" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
