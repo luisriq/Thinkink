@@ -26,6 +26,15 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        //esto tenia el mio
+        setContentView(R.layout.login);
+
+        /**setContentView(R.layout.activity_main);
+         *android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+         *android.support.v4.app.Fragment fragment = new Picture_list();
+         *fm.beginTransaction().replace(R.id.contenedor, fragment).commit();
+         */
+
     }
 
     @Override

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="1200dp"
+            android:layout_height="80dp"
+            android:id="@+id/imageFondoLogo"
+            android:background="@color/colorPrimary"
+            android:layout_gravity="center_horizontal|top" />
+
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="200dp"
+            android:paddingTop="15dp"
+            android:id="@+id/imageView"
+            android:layout_gravity="center_horizontal|top"
+            android:src="@drawable/logocontitulo" />
+
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/textViewLoginTitle"
+            android:layout_gravity="center"
+            android:text="@string/loginTitle" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:theme="@style/Theme.App.Base"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:hint="@string/emailHint"
+            android:ems="10"
+            android:id="@+id/editTextEmail"
+            android:layout_gravity="center_horizontal" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/Theme.App.Base"
+            android:paddingTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:inputType="textPassword"
+            android:hint="@string/passwordHint"
+            android:ems="10"
+            android:id="@+id/editTextPassword"
+            android:layout_gravity="center_horizontal" />
+
+        <ImageView
+            android:layout_width="1200dp"
+            android:layout_height="30dp"
+            android:id="@+id/imageBottom"
+            android:background="@color/colorPrimary"
+            android:layout_gravity="center_horizontal|bottom" />
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollView2" />
+    </LinearLayout>
+
+</LinearLayout>
