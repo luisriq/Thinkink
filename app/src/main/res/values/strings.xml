@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">Thinkink</string>
     <string name="action_settings">Settings</string>
+    <string name="loginTitle">Login</string>
+    <string name="emailHint">Email</string>
+    <string name="passwordHint">Contraseña</string>
+    <string name="sinCuenta">¿No posees cuenta?</string>
+    <string name="sinCuentaButton">Regístrate aquí</string>
+    <string name="RegisterTitle">Registro</string>
+    <string name="nombreHint">Nombre</string>
+    <string name="apellidoHint">Apellido</string>
+    <string name="passwordHintConfirmation">Repetir Contraseña</string>
+    <string name="buttonRegistro">Registrarse</string>
+    <string name="buttonRegistroSalir">Salir</string>
 </resources>

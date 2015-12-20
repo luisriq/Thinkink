@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">Think_ink</string>
-    <string name="loginTitle">Login</string>
-    <string name="emailHint">Email</string>
-    <string name="passwordHint">Password</string>
-</resources>

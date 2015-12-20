@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.grupo2tbd.thinkink.R;
 
@@ -28,5 +29,10 @@ public class Login extends android.support.v4.app.Fragment {
         this.v = inflater.inflate(R.layout.login, container, false);
         ImageView fondo = (ImageView) v.findViewById(R.id.imageFondoLogo);
         return v;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
     }
 }
