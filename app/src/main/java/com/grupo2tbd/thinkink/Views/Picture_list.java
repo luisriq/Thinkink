@@ -72,6 +72,12 @@ public class Picture_list extends android.support.v4.app.Fragment{
 
         super.onResume();
     }
+    public static Picture_list newInstance(){
+        Picture_list pl = new Picture_list();
+        Bundle b = new Bundle();
+        pl.setArguments(b);
+        return pl;
+    }
 
     public void setString(String string) {
         this.URL_GET = string;

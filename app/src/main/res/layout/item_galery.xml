@@ -39,7 +39,8 @@
                 android:layout_height="72dp"
                 android:paddingLeft="8dp"
                 android:paddingBottom="8dp"
-                android:layout_gravity="left|bottom"
+                android:layout_alignBottom="@+id/imagenCard"
+                android:layout_gravity="left"
                 android:id="@+id/imageUsuerGallery"
                 android:src="@drawable/yo" />
 

@@ -8,8 +8,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.grupo2tbd.thinkink.Views.Picture_list;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
+
+    TextView t;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +34,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //esto tenia el mio
-        setContentView(R.layout.login);
-
+        setContentView(R.layout.registro);
         /**setContentView(R.layout.activity_main);
-         *android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
-         *android.support.v4.app.Fragment fragment = new Picture_list();
-         *fm.beginTransaction().replace(R.id.contenedor, fragment).commit();
-         */
+        *android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+        *android.support.v4.app.Fragment fragment = new Picture_list();
+        *fm.beginTransaction().replace(R.id.contenedor, fragment).commit();
+        */
 
     }
 
@@ -42,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    public void onClick(View v){
     }
 
     @Override
