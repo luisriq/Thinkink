@@ -4,20 +4,27 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.grupo2tbd.thinkink.Rest.ServiceGenerator;
@@ -58,6 +65,10 @@ public class PerfilTatuador extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ViewPager pager = (ViewPager) findViewById(R.id.viewPagerPerfil);
         pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+
+        PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabsViewPagerPerfil);
+        tabs.setViewPager(pager);
+
     }
 
 
@@ -72,14 +83,26 @@ public class PerfilTatuador extends AppCompatActivity {
 
                 case 0: return InformacionPerfilFragment.newInstance();
                 case 1: return Picture_list.newInstance();
+                case 2: return Picture_list.newInstance();
                 default: return InformacionPerfilFragment.newInstance();
         }
 
     }
 
+        public CharSequence getPageTitle(int position){
+            switch(position) {
+
+                case 0: return "Información";
+                case 1: return "Galería 1";
+                case 2: return "Galería 2";
+                case 3: return "Mapa";
+                default: return "Información";
+            }
+        }
+
         @Override
         public int getCount() {
-            return 2;
+            return 4;
         }
     }
     @Override

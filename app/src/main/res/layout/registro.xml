@@ -118,14 +118,6 @@
                 <!-- View - Filler - Rellena el espacio entre editText y imageView-->
 
 
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/radiousTrue"
-                    android:id="@+id/radioButton"
-                    android:layout_gravity="center_horizontal"
-                    android:checked="false" />
-
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
@@ -138,23 +130,20 @@
                         android:layout_weight="1" />
 
                     <Button
+                        android:theme="@style/SpecialButton"
                         android:layout_width="120dp"
-                        android:layout_height="30dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="50dp"
-                        android:textColor="@color/lineaEditTextNormal"
-                        android:background="@color/colorPrimaryDark"
                         android:text="@string/buttonRegistro"
                         android:id="@+id/buttonRegistro" />
-
                     <Button
+                        android:theme="@style/SpecialButton"
                         android:layout_width="120dp"
-                        android:layout_height="30dp"
-                        android:textColor="@color/lineaEditTextNormal"
-                        android:background="@color/colorPrimaryDark"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="50dp"
                         android:text="@string/buttonRegistroSalir"
-                        android:id="@+id/buttonRegistroSalir" />
+                        android:id="@+id/buttonRegistroSalir"/>
                     <View
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
