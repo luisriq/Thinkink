@@ -4,25 +4,31 @@
     android:layout_height="match_parent">
 
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView3" >
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:id="@+id/imageView2"
-            android:background="@drawable/gris"
-            android:layout_gravity="center_horizontal" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:id="@+id/imageView3"
-            android:background="@drawable/yo"
-            android:layout_gravity="left" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:id="@+id/imageView2"
+                android:background="@drawable/gris"
+                android:layout_gravity="center_horizontal" />
 
-    </FrameLayout>
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:id="@+id/imageView3"
+                android:background="@drawable/yo"
+                android:layout_gravity="left" />
+
+        </FrameLayout>
+    </ScrollView>
 
     <android.support.v4.view.ViewPager
         xmlns:android="http://schemas.android.com/apk/res/android"

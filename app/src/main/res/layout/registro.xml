@@ -118,6 +118,14 @@
                 <!-- View - Filler - Rellena el espacio entre editText y imageView-->
 
 
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/radiousTrue"
+                    android:id="@+id/radioButton"
+                    android:layout_gravity="center_horizontal"
+                    android:checked="false" />
+
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"

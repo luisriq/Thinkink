@@ -13,4 +13,5 @@
     <string name="buttonRegistro">Registrarse</string>
     <string name="buttonRegistroSalir">Salir</string>
     <string name="buttonSingIn">Sing In</string>
+    <string name="radiousTrue">Tatuador</string>
 </resources>
