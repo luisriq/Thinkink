@@ -13,5 +13,9 @@
     <string name="buttonRegistro">Registrarse</string>
     <string name="buttonRegistroSalir">Salir</string>
     <string name="buttonSingIn">Sing In</string>
+<<<<<<< HEAD
     <string name="radiousTrue">Tatuador</string>
+=======
+    <string name="action_add">Agregar</string>
+>>>>>>> origin/master
 </resources>
