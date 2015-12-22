@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.grupo2tbd.thinkink.Views.Login;
 import com.grupo2tbd.thinkink.Views.Picture_list;
 
 import org.w3c.dom.Text;
@@ -23,23 +24,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        //esto tenia el mio
-        setContentView(R.layout.registro);
-        /**setContentView(R.layout.activity_main);
-        *android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
-        *android.support.v4.app.Fragment fragment = new Picture_list();
-        *fm.beginTransaction().replace(R.id.contenedor, fragment).commit();
-        */
+        setSupportActionBar(toolbar);
+        getSupportActionBar().hide();
+        android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+        android.support.v4.app.Fragment fragment = new Login(this);
+        fm.beginTransaction().replace(R.id.containerInicio, fragment).commit();
+
 
     }
 

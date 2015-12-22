@@ -27,7 +27,17 @@ public class Login extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.v = inflater.inflate(R.layout.login, container, false);
-        ImageView fondo = (ImageView) v.findViewById(R.id.imageFondoLogo);
+
+        TextView tx = (TextView)v.findViewById(R.id.textViewNoCuentaButton);
+        tx.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.support.v4.app.FragmentManager fm = Login.this.getActivity().getSupportFragmentManager();
+                android.support.v4.app.Fragment fragment = new Registro(Login.this.getContext());
+                fm.beginTransaction().replace(R.id.containerInicio, fragment).commit();
+
+            }
+        });
         return v;
     }
 

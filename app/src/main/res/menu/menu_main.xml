@@ -13,4 +13,6 @@ tools:context="com.herprogramacion.toolbarapp.DetailActivity">
     android:orderInCategory="1"
     android:title="@string/action_add"
     app:showAsAction="ifRoom" />
+
+
 </menu>
