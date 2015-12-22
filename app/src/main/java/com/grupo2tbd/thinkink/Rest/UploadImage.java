@@ -13,7 +13,7 @@ import retrofit.http.Part;
 public interface UploadImage {
     @Multipart
     @POST("fileupload")
-    Call<String> upload(
+    Call<Status> upload(
             @Part("file") RequestBody file,
             @Part("description") String description);
 }

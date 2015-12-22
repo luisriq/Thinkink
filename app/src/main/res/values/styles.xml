@@ -19,5 +19,9 @@
         <item name="colorControlActivated">@color/lineaEditText</item>
         <item name="colorControlHighlight">@color/lineaEditTextHightLight</item>
     </style>
+    <style name="SpecialButton" parent="Widget.AppCompat.Button">
 
+        <item name="colorButtonNormal">@color/colorPrimaryDark</item>
+        <item name="android:textColorPrimary">#fff</item>
+    </style>
 </resources>
