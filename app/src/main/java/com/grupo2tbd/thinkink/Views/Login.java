@@ -1,14 +1,35 @@
 package com.grupo2tbd.thinkink.Views;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.grupo2tbd.thinkink.PerfilTatuador;
 import com.grupo2tbd.thinkink.R;
+import com.grupo2tbd.thinkink.Rest.ServiceGenerator;
+import com.grupo2tbd.thinkink.Rest.ServiceGeneratorRest;
+import com.grupo2tbd.thinkink.Rest.Status;
+import com.grupo2tbd.thinkink.Rest.UploadImage;
+import com.grupo2tbd.thinkink.Rest.Usuario;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.RequestBody;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by cris_ on 16/12/2015.
@@ -34,7 +55,47 @@ public class Login extends android.support.v4.app.Fragment {
             public void onClick(View v) {
                 android.support.v4.app.FragmentManager fm = Login.this.getActivity().getSupportFragmentManager();
                 android.support.v4.app.Fragment fragment = new Registro(Login.this.getContext());
-                fm.beginTransaction().replace(R.id.containerInicio, fragment).commit();
+                fm.beginTransaction().replace(R.id.containerInicio, fragment).addToBackStack(null).commit();
+
+            }
+        });
+        final Button btnLogin = (Button) v.findViewById(R.id.button_login);
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnLogin.setEnabled(false);
+                //LLamada Login
+                Usuario loginService = ServiceGeneratorRest.createService(Usuario.class);
+                HashMap<String, String> user = new HashMap<>();
+                user.put("correo", "lucho@lucho");
+                user.put("pass", "1234");
+                Call<HashMap<String, String>> call = loginService.logear(user);
+                call.enqueue(new Callback<HashMap<String, String>>() {
+                    @Override
+                    public void onResponse(Response<HashMap<String, String>> response, Retrofit retrofit) {
+                        for (Map.Entry<String, String> entry : response.body().entrySet()) {
+                            Log.e(""+entry.getKey(), entry.getValue());
+
+                        }
+                        if(response.body().containsKey("ERROR")){
+
+                            btnLogin.setEnabled(false);
+                            return;
+                        }
+                        Intent i = new Intent(getActivity(), PerfilTatuador.class);
+                        i.putExtra("id", response.body().get("idUsuario"));
+                        startActivity(i);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Log.e("Upload", t.getMessage());
+                        Toast.makeText(Login.this.getContext(), "Error al subir imagen", Toast.LENGTH_SHORT).show();
+                        btnLogin.setEnabled(false);
+                    }
+                });
+
 
             }
         });

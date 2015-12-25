@@ -2,6 +2,8 @@ package com.grupo2tbd.thinkink.Rest;
 
 import com.squareup.okhttp.RequestBody;
 
+import java.util.HashMap;
+
 import retrofit.Call;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
@@ -13,7 +15,7 @@ import retrofit.http.Part;
 public interface UploadImage {
     @Multipart
     @POST("fileupload")
-    Call<Status> upload(
+    Call<HashMap<String, String>> upload(
             @Part("file") RequestBody file,
-            @Part("description") String description);
+            @Part("idusuario") int id);
 }

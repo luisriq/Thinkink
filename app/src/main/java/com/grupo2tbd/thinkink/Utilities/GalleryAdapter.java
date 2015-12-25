@@ -68,12 +68,7 @@ public class GalleryAdapter extends BaseAdapter {
                 .load(R.drawable.fondoamarillo)
                 .centerCrop()
                 .fitCenter()
-                .into(new SimpleTarget<GlideDrawable>() {
-                    @Override
-                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                        imageView.setImageDrawable(resource.getCurrent());
-                    }
-                });
+                .into(imageView);
         return convertView;
     }
 }

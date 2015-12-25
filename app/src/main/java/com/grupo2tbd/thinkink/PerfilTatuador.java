@@ -36,6 +36,7 @@ import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.RequestBody;
 
 import java.io.File;
+import java.util.HashMap;
 
 import retrofit.Call;
 import retrofit.Callback;
@@ -125,16 +126,15 @@ public class PerfilTatuador extends AppCompatActivity {
                 UploadImage service =
                         ServiceGenerator.createService(UploadImage.class);
 
-                String description = "hello, this is description speaking";
                 File file = new File(path);
 
                 RequestBody requestBody =
                         RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
-                Call<Status> call = service.upload(requestBody, description);
-                call.enqueue(new Callback<Status>() {
+                Call<HashMap<String, String>> call = service.upload(requestBody, 2);
+                call.enqueue(new Callback<HashMap<String, String>>() {
                     @Override
-                    public void onResponse(Response<Status> response, Retrofit retrofit) {
+                    public void onResponse(Response<HashMap<String, String>> response, Retrofit retrofit) {
                         progressDialog.dismiss();
                         Toast.makeText(PerfilTatuador.this, "Imagen Subida correctamente", Toast.LENGTH_SHORT).show();
                     }
