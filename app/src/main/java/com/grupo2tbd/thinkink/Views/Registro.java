@@ -3,6 +3,7 @@ package com.grupo2tbd.thinkink.Views;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,7 +39,7 @@ public class Registro extends android.support.v4.app.Fragment {
     /**
      * Constructor
      */
-    public Registro(Context c){
+    public Registro(){
     }//Login()
 
     @Override
@@ -90,7 +91,9 @@ public class Registro extends android.support.v4.app.Fragment {
 
                         Intent i = new Intent(getActivity(), PerfilTatuador.class);
                         i.putExtra("id", response.body().get("idUsuario"));
-
+                        SharedPreferences.Editor editor = getActivity().getSharedPreferences(PerfilTatuador.Preferencias, Context.MODE_PRIVATE).edit();
+                        editor.putString("idUsuario", response.body().get("idUsuario"));
+                        editor.commit();
                         startActivity(i);
                         progressDialog.dismiss();
                         getActivity().finish();

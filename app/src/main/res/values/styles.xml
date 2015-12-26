@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/cardview_light_background</item>
     </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -23,5 +23,15 @@
 
         <item name="colorButtonNormal">@color/colorPrimaryDark</item>
         <item name="android:textColorPrimary">#fff</item>
+    </style>
+
+    <style name="Base.Widget.Design.TabLayout" parent="android:Widget">
+        <item name="tabIndicatorColor">?attr/colorAccent</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabPaddingStart">12dp</item>
+        <item name="tabPaddingEnd">12dp</item>
+        <item name="tabBackground">?attr/selectableItemBackground</item>
+        <item name="tabTextAppearance">@style/TextAppearance.Design.Tab</item>
+        <item name="tabSelectedTextColor">?android:textColorPrimary</item>
     </style>
 </resources>

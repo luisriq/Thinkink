@@ -46,7 +46,7 @@ public class Login extends android.support.v4.app.Fragment {
     /**
      * Constructor
      */
-    public Login(Context c){
+    public Login(){
     }//Login()
 
     @Override
@@ -62,7 +62,7 @@ public class Login extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 android.support.v4.app.FragmentManager fm = Login.this.getActivity().getSupportFragmentManager();
-                android.support.v4.app.Fragment fragment = new Registro(Login.this.getContext());
+                android.support.v4.app.Fragment fragment = new Registro();
                 fm.beginTransaction().replace(R.id.containerInicio, fragment).addToBackStack(null).commit();
 
             }

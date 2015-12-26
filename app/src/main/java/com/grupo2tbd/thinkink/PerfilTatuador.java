@@ -5,31 +5,26 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.astuetz.PagerSlidingTabStrip;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.grupo2tbd.thinkink.Rest.ServiceGenerator;
-import com.grupo2tbd.thinkink.Rest.Status;
 import com.grupo2tbd.thinkink.Rest.UploadImage;
 import com.grupo2tbd.thinkink.Views.InformacionPerfilFragment;
 import com.grupo2tbd.thinkink.Views.Picture_list;
@@ -68,9 +63,18 @@ public class PerfilTatuador extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ViewPager pager = (ViewPager) findViewById(R.id.viewPagerPerfil);
         pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
-
-        PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabsViewPagerPerfil);
-        tabs.setViewPager(pager);
+        TabLayout tabs = (TabLayout) findViewById(R.id.tabsViewpager);
+        tabs.setupWithViewPager(pager);
+        FloatingActionButton subir = (FloatingActionButton) findViewById(R.id.subirFoto);
+        subir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent e = new Intent(
+                        Intent.ACTION_PICK,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(e, IMAGE_PICKER_SELECT);
+            }
+        });
 
     }
 
@@ -174,24 +178,9 @@ public class PerfilTatuador extends AppCompatActivity {
                 startActivity(i);
                 finish();
                 return true;
-            case R.id.action_add:
-                subirImagen();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-
-
-    }
-
-    public void subirImagen(){
-
-        Intent i = new Intent(
-                Intent.ACTION_PICK,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(i, IMAGE_PICKER_SELECT);
-
-
     }
 
     public static String getPathFromCameraData(Intent data, Context context) {
