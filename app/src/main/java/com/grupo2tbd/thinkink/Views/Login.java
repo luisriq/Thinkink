@@ -1,13 +1,16 @@
 package com.grupo2tbd.thinkink.Views;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +41,7 @@ public class Login extends android.support.v4.app.Fragment {
 
     private LayoutInflater li;
     private View v;
+    private ProgressDialog progressDialog;
 
     /**
      * Constructor
@@ -50,6 +54,10 @@ public class Login extends android.support.v4.app.Fragment {
         this.v = inflater.inflate(R.layout.login, container, false);
 
         TextView tx = (TextView)v.findViewById(R.id.textViewNoCuentaButton);
+        final EditText correo = (EditText) v.findViewById(R.id.editTextEmail);
+        final EditText pass = (EditText) v.findViewById(R.id.editTextPassword);
+
+
         tx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,9 +76,16 @@ public class Login extends android.support.v4.app.Fragment {
                 //LLamada Login
                 Usuario loginService = ServiceGeneratorRest.createService(Usuario.class);
                 HashMap<String, String> user = new HashMap<>();
-                user.put("correo", "lucho@lucho");
-                user.put("pass", "1234");
+
+                user.put("correo", correo.getText().toString());
+                user.put("pass", pass.getText().toString());
                 Call<HashMap<String, String>> call = loginService.logear(user);
+                progressDialog = new ProgressDialog(getContext());
+                progressDialog.setMessage("Conectando....");
+                progressDialog.setCancelable(false);
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.show();
                 call.enqueue(new Callback<HashMap<String, String>>() {
                     @Override
                     public void onResponse(Response<HashMap<String, String>> response, Retrofit retrofit) {
@@ -79,20 +94,29 @@ public class Login extends android.support.v4.app.Fragment {
 
                         }
                         if(response.body().containsKey("ERROR")){
-
-                            btnLogin.setEnabled(false);
+                            Toast.makeText(Login.this.getContext(), "Error al ingresar\n"+response.body().get("ERROR"), Toast.LENGTH_LONG).show();
+                            progressDialog.dismiss();
+                            btnLogin.setEnabled(true);
                             return;
                         }
+
                         Intent i = new Intent(getActivity(), PerfilTatuador.class);
                         i.putExtra("id", response.body().get("idUsuario"));
+                        //Se guarda el id para mantener la sesion iniciada
+                        SharedPreferences.Editor editor = getActivity().getSharedPreferences(PerfilTatuador.Preferencias, Context.MODE_PRIVATE).edit();
+                        editor.putString("idUsuario", response.body().get("idUsuario"));
+                        editor.commit();
                         startActivity(i);
+                        progressDialog.dismiss();
+                        getActivity().finish();
                     }
 
                     @Override
                     public void onFailure(Throwable t) {
                         Log.e("Upload", t.getMessage());
-                        Toast.makeText(Login.this.getContext(), "Error al subir imagen", Toast.LENGTH_SHORT).show();
-                        btnLogin.setEnabled(false);
+                        Toast.makeText(Login.this.getContext(), "Error al ingresar", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                        btnLogin.setEnabled(true);
                     }
                 });
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
@@ -37,6 +38,7 @@ import com.squareup.okhttp.RequestBody;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 
 import retrofit.Call;
 import retrofit.Callback;
@@ -50,7 +52,7 @@ public class PerfilTatuador extends AppCompatActivity {
 
     private static final int IMAGE_PICKER_SELECT = 100;
     private ProgressDialog progressDialog;
-
+    public static final String Preferencias = "ThinkInk";
     public PerfilTatuador() {
     }
 
@@ -112,7 +114,6 @@ public class PerfilTatuador extends AppCompatActivity {
                 && resultCode == Activity.RESULT_OK) {
             progressDialog = new ProgressDialog(this);
             progressDialog.setMessage("Subiendo Imagen....");
-            progressDialog.setTitle("Cargando");
             progressDialog.setCancelable(false);
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -131,11 +132,12 @@ public class PerfilTatuador extends AppCompatActivity {
                 RequestBody requestBody =
                         RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
-                Call<HashMap<String, String>> call = service.upload(requestBody, 2);
-                call.enqueue(new Callback<HashMap<String, String>>() {
+                Call<HashMap<String, List<HashMap<String, String>>>> call = service.upload(requestBody, 2);
+                call.enqueue(new Callback<HashMap<String, List<HashMap<String, String>>>>() {
                     @Override
-                    public void onResponse(Response<HashMap<String, String>> response, Retrofit retrofit) {
+                    public void onResponse(Response<HashMap<String, List<HashMap<String, String>>>> response, Retrofit retrofit) {
                         progressDialog.dismiss();
+
                         Toast.makeText(PerfilTatuador.this, "Imagen Subida correctamente", Toast.LENGTH_SHORT).show();
                     }
 
@@ -163,8 +165,14 @@ public class PerfilTatuador extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_settings:
-                Toast.makeText(PerfilTatuador.this, "Settings", Toast.LENGTH_SHORT).show();
+            case R.id.action_salir:
+                SharedPreferences.Editor editor = this.getSharedPreferences(PerfilTatuador.Preferencias, Context.MODE_PRIVATE).edit();
+                editor.remove("idUsuario");
+                editor.commit();
+
+                Intent i = new Intent(this, MainActivity.class);
+                startActivity(i);
+                finish();
                 return true;
             case R.id.action_add:
                 subirImagen();

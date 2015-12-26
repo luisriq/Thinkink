@@ -32,7 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:id="@+id/imageFondoLogo"
-                    android:background="@drawable/background"
+                    android:background="@drawable/gris"
                     android:layout_gravity="center_horizontal|top" />
 
                 <ImageView
@@ -135,7 +135,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:id="@+id/imageBottom"
-                    android:background="@drawable/background"
+                    android:background="@drawable/gris"
                     android:layout_gravity="center_horizontal|bottom"
                     android:baselineAlignBottom="false"
                     android:layout_alignParentBottom="true"

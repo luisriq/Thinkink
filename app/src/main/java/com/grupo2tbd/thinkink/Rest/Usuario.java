@@ -14,4 +14,9 @@ public interface Usuario {
     @Headers( "Content-Type: application/json" )
     @POST("login")
     Call<HashMap<String, String>> logear( @Body HashMap<String, String> sJsonBody ) ;
+
+
+    @Headers( "Content-Type: application/json" )
+    @POST("registro")
+    Call<HashMap<String, String>> registrar( @Body HashMap<String, String> sJsonBody ) ;
 }

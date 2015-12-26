@@ -1,5 +1,8 @@
 package com.grupo2tbd.thinkink;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -23,6 +26,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences sharedPref = getSharedPreferences(PerfilTatuador.Preferencias, Context.MODE_PRIVATE);
+        String id = sharedPref.getString("idUsuario",null);
+        if(id != null){
+            Intent i = new Intent(this, PerfilTatuador.class);
+            i.putExtra("id",id);
+            startActivity(i);
+            finish();
+        }
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
@@ -52,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_salir) {
             return true;
         }
 
