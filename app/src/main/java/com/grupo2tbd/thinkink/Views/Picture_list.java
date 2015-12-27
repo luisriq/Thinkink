@@ -40,7 +40,7 @@ public class Picture_list extends android.support.v4.app.Fragment{
     private BroadcastReceiver br = null;
     private String URL_GET;
     private View v;
-
+    private RecyclerView recList = null;
 
     /**
      * Constructor
@@ -56,7 +56,7 @@ public class Picture_list extends android.support.v4.app.Fragment{
         this.v = inflater.inflate(R.layout.gallery, container, false);
         //ListView lista = (ListView) v.findViewById(R.id.galeryListView);
         //lista.setAdapter(new GalleryAdapter(getContext()));
-        final RecyclerView recList = (RecyclerView) v.findViewById(R.id.cardList);
+        recList = (RecyclerView) v.findViewById(R.id.cardList);
         recList.setHasFixedSize(true);
         //LinearLayoutManager llm = new GridLayoutManager(getContext(), 2);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
@@ -131,5 +131,11 @@ public class Picture_list extends android.support.v4.app.Fragment{
 
     public void setString(String string) {
         this.URL_GET = string;
+    }
+
+    public void agregarFoto(Galeria.Foto foto) {
+        ((GalleryAdapterRV)recList.getAdapter()).listaFotos.add(0, foto);
+        recList.getAdapter().notifyItemInserted(0);
+        recList.scrollToPosition(0);
     }
 }

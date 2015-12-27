@@ -24,7 +24,7 @@ import java.util.List;
 public class GalleryAdapterRV extends RecyclerView.Adapter<GalleryAdapterRV.FotoViewHolder> {
 
     private final Context c;
-    private ArrayList<Galeria.Foto> listaFotos;
+    public ArrayList<Galeria.Foto> listaFotos;
 
     public GalleryAdapterRV(ArrayList<Galeria.Foto> listaFotos, Context c) {
         this.listaFotos = listaFotos;

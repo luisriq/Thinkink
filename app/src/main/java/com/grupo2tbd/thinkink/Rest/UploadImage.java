@@ -16,7 +16,7 @@ import retrofit.http.Part;
 public interface UploadImage {
     @Multipart
     @POST("fileupload")
-    Call<HashMap<String, List<HashMap<String, String>>>> upload(
+    Call<Galeria.Foto> upload(
             @Part("file") RequestBody file,
             @Part("idusuario") int id);
 }

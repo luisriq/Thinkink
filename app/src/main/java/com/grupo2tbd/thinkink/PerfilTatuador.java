@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.grupo2tbd.thinkink.Rest.Galeria;
 import com.grupo2tbd.thinkink.Rest.ServiceGenerator;
 import com.grupo2tbd.thinkink.Rest.UploadImage;
 import com.grupo2tbd.thinkink.Views.InformacionPerfilFragment;
@@ -32,6 +34,7 @@ import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.RequestBody;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -48,6 +51,8 @@ public class PerfilTatuador extends AppCompatActivity {
     private static final int IMAGE_PICKER_SELECT = 100;
     private ProgressDialog progressDialog;
     public static final String Preferencias = "ThinkInk";
+    private ViewPager pager;
+
     public PerfilTatuador() {
     }
 
@@ -61,8 +66,9 @@ public class PerfilTatuador extends AppCompatActivity {
         setContentView(R.layout.perfil_tatuador);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ViewPager pager = (ViewPager) findViewById(R.id.viewPagerPerfil);
+        pager = (ViewPager) findViewById(R.id.viewPagerPerfil);
         pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+
         TabLayout tabs = (TabLayout) findViewById(R.id.tabsViewpager);
         tabs.setupWithViewPager(pager);
         FloatingActionButton subir = (FloatingActionButton) findViewById(R.id.subirFoto);
@@ -80,20 +86,16 @@ public class PerfilTatuador extends AppCompatActivity {
 
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
+        public ArrayList<Fragment> fragments = new ArrayList<>();
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
+            fragments.add(InformacionPerfilFragment.newInstance());
+            fragments.add(Picture_list.newInstance(getIntent().getIntExtra("id", -1)));
         }
 
         @Override
         public android.support.v4.app.Fragment getItem(int pos){
-            switch(pos) {
-
-                case 0: return InformacionPerfilFragment.newInstance();
-                case 1: return Picture_list.newInstance(getIntent().getIntExtra("id", -1));
-                case 2: return Picture_list.newInstance(getIntent().getIntExtra("id", -1));
-                default: return InformacionPerfilFragment.newInstance();
-        }
-
+            return fragments.get(pos);
     }
 
         public CharSequence getPageTitle(int position){
@@ -109,7 +111,7 @@ public class PerfilTatuador extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 4;
+            return 2;
         }
     }
     @Override
@@ -138,11 +140,13 @@ public class PerfilTatuador extends AppCompatActivity {
                 int idUsuario = getIntent().getIntExtra("id", -1);
                 Log.e("IDDD", ""+idUsuario);
 
-                Call<HashMap<String, List<HashMap<String, String>>>> call = service.upload(requestBody, idUsuario);
-                call.enqueue(new Callback<HashMap<String, List<HashMap<String, String>>>>() {
+                Call<Galeria.Foto> call = service.upload(requestBody, idUsuario);
+                call.enqueue(new Callback<Galeria.Foto>() {
                     @Override
-                    public void onResponse(Response<HashMap<String, List<HashMap<String, String>>>> response, Retrofit retrofit) {
+                    public void onResponse(Response<Galeria.Foto> response, Retrofit retrofit) {
                         progressDialog.dismiss();
+                        //Actualizar lista
+                        ((Picture_list)((MyPagerAdapter)pager.getAdapter()).getItem(1)).agregarFoto(response.body());
 
                         Toast.makeText(PerfilTatuador.this, "Imagen Subida correctamente", Toast.LENGTH_SHORT).show();
                     }
