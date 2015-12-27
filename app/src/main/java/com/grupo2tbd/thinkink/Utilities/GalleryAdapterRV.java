@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.grupo2tbd.thinkink.R;
+import com.grupo2tbd.thinkink.Rest.Galeria;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -23,9 +24,9 @@ import java.util.List;
 public class GalleryAdapterRV extends RecyclerView.Adapter<GalleryAdapterRV.FotoViewHolder> {
 
     private final Context c;
-    private ArrayList<String> listaFotos;
+    private ArrayList<Galeria.Foto> listaFotos;
 
-    public GalleryAdapterRV(ArrayList<String> listaFotos, Context c) {
+    public GalleryAdapterRV(ArrayList<Galeria.Foto> listaFotos, Context c) {
         this.listaFotos = listaFotos;
         this.c = c;
     }
@@ -37,9 +38,13 @@ public class GalleryAdapterRV extends RecyclerView.Adapter<GalleryAdapterRV.Foto
 
     @Override
     public void onBindViewHolder(FotoViewHolder contactViewHolder, int i) {
-        String ci = listaFotos.get(i);
-        contactViewHolder.vName.setText(ci);
-        Picasso.with(c).load(R.drawable.fondoamarillo).resize(600, 200).centerInside().into(contactViewHolder.foto);
+        Galeria.Foto ci = listaFotos.get(i);
+        contactViewHolder.vName.setText(ci.nombre);
+        contactViewHolder.vFecha.setText(ci.fecha);
+        String url = "http://192.168.0.3:8080/Think-INK/verFoto/"+ci.idFoto;
+        //Picasso.with(c).load(R.drawable.fondoamarillo).resize(600, 200).centerInside().into(contactViewHolder.foto);
+        Picasso.with(c).load(url).resize(600, 200).centerInside().into(contactViewHolder.foto);
+
         /*Glide.with(c)
                 .load(R.drawable.tatuaje).thumbnail(0.5f)
                 .crossFade()
@@ -64,12 +69,14 @@ public class GalleryAdapterRV extends RecyclerView.Adapter<GalleryAdapterRV.Foto
     public static class FotoViewHolder extends RecyclerView.ViewHolder {
 
 
+        protected TextView vFecha;
         protected ImageView foto;
         protected TextView vName;
 
         public FotoViewHolder(View v) {
             super(v);
-            vName =  (TextView) v.findViewById(R.id.textView2);
+            vName =  (TextView) v.findViewById(R.id.nombre_usuario);
+            vFecha = (TextView) v.findViewById(R.id.textView2);
             foto = (ImageView) v.findViewById(R.id.imagenCard);
 
         }

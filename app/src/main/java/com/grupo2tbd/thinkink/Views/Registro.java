@@ -90,7 +90,7 @@ public class Registro extends android.support.v4.app.Fragment {
                         }
 
                         Intent i = new Intent(getActivity(), PerfilTatuador.class);
-                        i.putExtra("id", response.body().get("idUsuario"));
+                        i.putExtra("id", Integer.parseInt(response.body().get("idUsuario")));
                         SharedPreferences.Editor editor = getActivity().getSharedPreferences(PerfilTatuador.Preferencias, Context.MODE_PRIVATE).edit();
                         editor.putString("idUsuario", response.body().get("idUsuario"));
                         editor.commit();

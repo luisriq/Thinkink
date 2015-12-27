@@ -89,8 +89,8 @@ public class PerfilTatuador extends AppCompatActivity {
             switch(pos) {
 
                 case 0: return InformacionPerfilFragment.newInstance();
-                case 1: return Picture_list.newInstance();
-                case 2: return Picture_list.newInstance();
+                case 1: return Picture_list.newInstance(getIntent().getIntExtra("id", -1));
+                case 2: return Picture_list.newInstance(getIntent().getIntExtra("id", -1));
                 default: return InformacionPerfilFragment.newInstance();
         }
 
@@ -135,8 +135,10 @@ public class PerfilTatuador extends AppCompatActivity {
 
                 RequestBody requestBody =
                         RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                int idUsuario = getIntent().getIntExtra("id", -1);
+                Log.e("IDDD", ""+idUsuario);
 
-                Call<HashMap<String, List<HashMap<String, String>>>> call = service.upload(requestBody, 2);
+                Call<HashMap<String, List<HashMap<String, String>>>> call = service.upload(requestBody, idUsuario);
                 call.enqueue(new Callback<HashMap<String, List<HashMap<String, String>>>>() {
                     @Override
                     public void onResponse(Response<HashMap<String, List<HashMap<String, String>>>> response, Retrofit retrofit) {

@@ -2,20 +2,33 @@ package com.grupo2tbd.thinkink.Views;
 
 
 import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.Toast;
 
+import com.grupo2tbd.thinkink.PerfilTatuador;
 import com.grupo2tbd.thinkink.R;
-import com.grupo2tbd.thinkink.Utilities.GalleryAdapter;
+import com.grupo2tbd.thinkink.Rest.Galeria;
+import com.grupo2tbd.thinkink.Rest.ServiceGeneratorRest;
+import com.grupo2tbd.thinkink.Rest.Usuario;
 import com.grupo2tbd.thinkink.Utilities.GalleryAdapterRV;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 
 /**
@@ -43,18 +56,7 @@ public class Picture_list extends android.support.v4.app.Fragment{
         this.v = inflater.inflate(R.layout.gallery, container, false);
         //ListView lista = (ListView) v.findViewById(R.id.galeryListView);
         //lista.setAdapter(new GalleryAdapter(getContext()));
-
-        ArrayList<String> ar = new ArrayList<>();
-        ar.add("Pedro");
-        ar.add("Juan");
-        ar.add("Diego");
-        ar.add("Pedro");
-        ar.add("Juan");
-        ar.add("Diego");
-        ar.add("Pedro");
-        ar.add("Juan");
-        ar.add("Diego");
-        RecyclerView recList = (RecyclerView) v.findViewById(R.id.cardList);
+        final RecyclerView recList = (RecyclerView) v.findViewById(R.id.cardList);
         recList.setHasFixedSize(true);
         //LinearLayoutManager llm = new GridLayoutManager(getContext(), 2);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
@@ -62,7 +64,28 @@ public class Picture_list extends android.support.v4.app.Fragment{
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 
         recList.setLayoutManager(llm);
-        recList.setAdapter(new GalleryAdapterRV(ar, getContext()));
+
+
+        Usuario loginService = ServiceGeneratorRest.createService(Usuario.class);
+        Galeria g = new Galeria("SUBIDA", getArguments().getInt("id"));
+
+        Call<ArrayList<Galeria.Foto>> call = loginService.galeria(g);
+        call.enqueue(new Callback<ArrayList<Galeria.Foto>>() {
+            @Override
+            public void onResponse(Response<ArrayList<Galeria.Foto>> response, Retrofit retrofit) {
+                for (Galeria.Foto d : response.body()) {
+                    Log.e("Lista", ""+d.idFoto);
+                }
+                recList.setAdapter(new GalleryAdapterRV(response.body(), getContext()));
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e("Upload", t.getMessage());
+                Toast.makeText(Picture_list.this.getContext(), "Error al ingresar", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return v;
     }// onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -98,9 +121,10 @@ public class Picture_list extends android.support.v4.app.Fragment{
 
         super.onResume();
     }
-    public static Picture_list newInstance(){
+    public static Picture_list newInstance(int id){
         Picture_list pl = new Picture_list();
         Bundle b = new Bundle();
+        b.putInt("id", id);
         pl.setArguments(b);
         return pl;
     }

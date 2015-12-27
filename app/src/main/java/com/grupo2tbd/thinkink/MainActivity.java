@@ -31,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
         String id = sharedPref.getString("idUsuario",null);
         if(id != null){
             Intent i = new Intent(this, PerfilTatuador.class);
-            i.putExtra("id",id);
+            i.putExtra("id", Integer.parseInt(id));
+
             startActivity(i);
             finish();
         }

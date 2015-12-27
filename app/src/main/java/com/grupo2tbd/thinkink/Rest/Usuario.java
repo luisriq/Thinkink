@@ -1,6 +1,8 @@
 package com.grupo2tbd.thinkink.Rest;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import retrofit.Call;
 import retrofit.http.Body;
@@ -19,4 +21,8 @@ public interface Usuario {
     @Headers( "Content-Type: application/json" )
     @POST("registro")
     Call<HashMap<String, String>> registrar( @Body HashMap<String, String> sJsonBody ) ;
+
+    @Headers( "Content-Type: application/json" )
+    @POST("verGaleria")
+    Call<ArrayList<Galeria.Foto>> galeria(@Body Galeria sJsonBody) ;
 }
