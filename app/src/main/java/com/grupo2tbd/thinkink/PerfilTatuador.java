@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -52,7 +53,7 @@ public class PerfilTatuador extends AppCompatActivity {
     private ProgressDialog progressDialog;
     public static final String Preferencias = "ThinkInk";
     private ViewPager pager;
-
+    public CollapsingToolbarLayout collapsingToolbarLayout;
     public PerfilTatuador() {
     }
 
@@ -66,6 +67,8 @@ public class PerfilTatuador extends AppCompatActivity {
         setContentView(R.layout.perfil_tatuador);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
         pager = (ViewPager) findViewById(R.id.viewPagerPerfil);
         pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
 
@@ -89,7 +92,7 @@ public class PerfilTatuador extends AppCompatActivity {
         public ArrayList<Fragment> fragments = new ArrayList<>();
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
-            fragments.add(InformacionPerfilFragment.newInstance());
+            fragments.add(InformacionPerfilFragment.newInstance(getIntent().getIntExtra("id", -1)));
             fragments.add(Picture_list.newInstance(getIntent().getIntExtra("id", -1)));
         }
 

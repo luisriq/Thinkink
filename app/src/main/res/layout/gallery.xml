@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -16,28 +15,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/scrollView"
-        android:fillViewport="true">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
-            <ListView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                android:layout_weight="1"
-                android:id="@+id/galeryListView"
-                android:dividerHeight="20dp"
-                android:divider="#00000000" />
-        </LinearLayout>
-    </ScrollView>
-
-
 
 </LinearLayout>

@@ -27,8 +27,22 @@ public class Galeria {
 
     public static class Usuario{
         public int idUsuario;
+        public String correo;
+        public String descripcion;
+        public String fechaCreacion;
+        public String nombreUsuario;
+        public String tipoUsuario;
         public Usuario(int id){
             idUsuario = id;
+        }
+
+        public Usuario(int idUsuario, String correo, String descripcion, String fechaCreacion, String nombreUsuario, String tipoUsuario) {
+            this.idUsuario = idUsuario;
+            this.correo = correo;
+            this.descripcion = descripcion;
+            this.fechaCreacion = fechaCreacion;
+            this.nombreUsuario = nombreUsuario;
+            this.tipoUsuario = tipoUsuario;
         }
     }
 }

@@ -25,4 +25,8 @@ public interface Usuario {
     @Headers( "Content-Type: application/json" )
     @POST("verGaleria")
     Call<ArrayList<Galeria.Foto>> galeria(@Body Galeria sJsonBody) ;
+
+    @Headers( "Content-Type: application/json" )
+    @POST("verPerfil")
+    Call<Galeria.Usuario> perfil(@Body HashMap<String, Integer> sJsonBody) ;
 }
