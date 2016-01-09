@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.google.android.gms.maps.MapView;
 import com.grupo2tbd.thinkink.Rest.Galeria;
 import com.grupo2tbd.thinkink.Rest.ServiceGenerator;
 import com.grupo2tbd.thinkink.Rest.UploadImage;
@@ -84,6 +85,7 @@ public class PerfilTatuador extends AppCompatActivity {
                 startActivityForResult(e, IMAGE_PICKER_SELECT);
             }
         });
+
 
     }
 

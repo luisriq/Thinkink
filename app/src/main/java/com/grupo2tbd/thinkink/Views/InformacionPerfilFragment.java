@@ -1,20 +1,22 @@
 package com.grupo2tbd.thinkink.Views;
 
-import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.grupo2tbd.thinkink.PerfilTatuador;
 import com.grupo2tbd.thinkink.R;
 import com.grupo2tbd.thinkink.Rest.Galeria;
 import com.grupo2tbd.thinkink.Rest.ServiceGeneratorRest;
 import com.grupo2tbd.thinkink.Rest.Usuario;
-
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 
@@ -23,10 +25,11 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
+
 /**
  * Created by cris_ on 21/12/2015.
  */
-public class InformacionPerfilFragment extends android.support.v4.app.Fragment {
+public class InformacionPerfilFragment extends android.support.v4.app.Fragment implements OnMapReadyCallback {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -56,9 +59,13 @@ public class InformacionPerfilFragment extends android.support.v4.app.Fragment {
         });
 
 
-            info.setText("");
+        info.setText("");
+        MapView mapView = (MapView) v.findViewById(R.id.map_view);
+        mapView.onCreate(null);
+        // Set the map ready callback to receive the GoogleMap object
+        mapView.getMapAsync(this);
 
-            return v;
+        return v;
         }
 
     public static InformacionPerfilFragment newInstance(int id){
@@ -67,5 +74,15 @@ public class InformacionPerfilFragment extends android.support.v4.app.Fragment {
         b.putInt("id", id);
         ipf.setArguments(b);
         return ipf;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        LatLng loc =  new LatLng(-33.4445011, -70.650879);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15f));
+
+        googleMap.addMarker(new MarkerOptions().position(loc));
+
     }
 }
