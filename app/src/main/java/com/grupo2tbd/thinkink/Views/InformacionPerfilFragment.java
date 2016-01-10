@@ -1,22 +1,38 @@
 package com.grupo2tbd.thinkink.Views;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.grupo2tbd.thinkink.PerfilTatuador;
 import com.grupo2tbd.thinkink.R;
 import com.grupo2tbd.thinkink.Rest.Galeria;
 import com.grupo2tbd.thinkink.Rest.ServiceGeneratorRest;
 import com.grupo2tbd.thinkink.Rest.Usuario;
+import com.kogitune.activity_transition.fragment.FragmentTransitionLauncher;
 
 import java.util.HashMap;
 
@@ -30,6 +46,10 @@ import retrofit.Retrofit;
  * Created by cris_ on 21/12/2015.
  */
 public class InformacionPerfilFragment extends android.support.v4.app.Fragment implements OnMapReadyCallback {
+
+    static int PLACE_PICKER_REQUEST = 1;
+    LatLng loc =  new LatLng(-33.4445011, -70.650879);
+    private MapView mapView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -60,10 +80,57 @@ public class InformacionPerfilFragment extends android.support.v4.app.Fragment i
 
 
         info.setText("");
-        MapView mapView = (MapView) v.findViewById(R.id.map_view);
+        mapView = (MapView) v.findViewById(R.id.map_view);
+
         mapView.onCreate(null);
         // Set the map ready callback to receive the GoogleMap object
         mapView.getMapAsync(this);
+        ImageButton editar = (ImageButton) v.findViewById(R.id.btn_editar);
+
+        editar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();//
+                builder.setLatLngBounds(new LatLngBounds(new LatLng(loc.latitude, loc.longitude - 0.05d), new LatLng(loc.latitude, loc.longitude + 0.05d)));
+                try {
+                    startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    //TODO: Generar Intent que lleve a la instalacion/actualizacion de googleplay
+                    Toast.makeText(getContext(), "GooglePlayService reparable excepcion", Toast.LENGTH_SHORT);
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    Toast.makeText(getContext(), "GooglePlayService no esta disponible", Toast.LENGTH_SHORT);
+
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        final CardView info_card = (CardView) v.findViewById(R.id.card_view);
+
+        final ObjectAnimator animation = ObjectAnimator.ofInt(
+                info,
+                "maxLines", 5);
+
+        animation.setDuration(500);
+        info_card.setOnClickListener(new View.OnClickListener() {
+            boolean expandido = false;
+
+            @Override
+            public void onClick(View v) {
+                animation.cancel();
+
+                if (expandido) {
+                    animation.setIntValues(5);
+                } else {
+                    animation.setIntValues(30);
+                }
+                animation.start();
+                Log.e("click", "" + expandido);
+                expandido = !expandido;
+
+            }
+        });
 
         return v;
         }
@@ -78,11 +145,24 @@ public class InformacionPerfilFragment extends android.support.v4.app.Fragment i
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
-        LatLng loc =  new LatLng(-33.4445011, -70.650879);
+        googleMap.clear();
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15f));
 
         googleMap.addMarker(new MarkerOptions().position(loc));
+        Log.e("POS MARKER", ""+loc.latitude+","+loc.longitude);
+    }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                Place place = PlacePicker.getPlace( getActivity(), data);
+                String toastMsg = String.format("Place: %s", place.getName());
+                Toast.makeText(getActivity(), toastMsg, Toast.LENGTH_LONG).show();
+                loc = place.getLatLng();
+                mapView.getMapAsync(this);
+            }
+        }
     }
 }
