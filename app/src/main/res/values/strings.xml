@@ -16,6 +16,7 @@
     <string name="radiousTrue">Tatuador</string>
     <string name="action_add">Agregar</string>
     <string name="titleCardInfo">Información</string>
-    <string name="textoCardInfo">eksjfnsonsnflnsd</string>
+    <string name="textoCardInfo">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</string>
     <string name="action_salir">Salir</string>
+    <string name="editar">Editar</string>
 </resources>

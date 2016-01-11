@@ -1,11 +1,17 @@
 package com.grupo2tbd.thinkink.Views;
 
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,10 +23,15 @@ import android.widget.Toast;
 import com.grupo2tbd.thinkink.PerfilTatuador;
 import com.grupo2tbd.thinkink.R;
 import com.grupo2tbd.thinkink.Rest.Galeria;
+import com.grupo2tbd.thinkink.Rest.ServiceGenerator;
 import com.grupo2tbd.thinkink.Rest.ServiceGeneratorRest;
+import com.grupo2tbd.thinkink.Rest.UploadImage;
 import com.grupo2tbd.thinkink.Rest.Usuario;
 import com.grupo2tbd.thinkink.Utilities.GalleryAdapterRV;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.RequestBody;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,10 +48,12 @@ import retrofit.Retrofit;
  */
 public class Picture_list extends android.support.v4.app.Fragment{
 
+    public static final int IMAGE_PICKER_SELECT = 100;
     private BroadcastReceiver br = null;
     private String URL_GET;
     private View v;
     private RecyclerView recList = null;
+    private ProgressDialog progressDialog;
 
     /**
      * Constructor
@@ -65,7 +78,17 @@ public class Picture_list extends android.support.v4.app.Fragment{
 
         recList.setLayoutManager(llm);
 
+        FloatingActionButton subir = (FloatingActionButton) v.findViewById(R.id.subirFoto);
 
+        subir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent e = new Intent(
+                        Intent.ACTION_PICK,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(e, IMAGE_PICKER_SELECT);
+            }
+        });
         Usuario loginService = ServiceGeneratorRest.createService(Usuario.class);
         Galeria g = new Galeria("SUBIDA", getArguments().getInt("id"));
 
@@ -137,5 +160,67 @@ public class Picture_list extends android.support.v4.app.Fragment{
         ((GalleryAdapterRV)recList.getAdapter()).listaFotos.add(0, foto);
         recList.getAdapter().notifyItemInserted(0);
         recList.scrollToPosition(0);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == IMAGE_PICKER_SELECT
+                && resultCode == Activity.RESULT_OK) {
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setMessage("Subiendo Imagen....");
+            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.show();
+            String path = getPathFromCameraData(data, getContext());
+            Log.i("PICTURE", "Path: " + path);
+            if (path != null) {
+                UploadImage service =
+                        ServiceGenerator.createService(UploadImage.class);
+
+                File file = new File(path);
+
+                RequestBody requestBody =
+                        RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                int idUsuario = getArguments().getInt("id", -1);
+                Log.e("IDDD", ""+idUsuario);
+
+                Call<Galeria.Foto> call = service.upload(requestBody, idUsuario);
+                call.enqueue(new Callback<Galeria.Foto>() {
+                    @Override
+                    public void onResponse(Response<Galeria.Foto> response, Retrofit retrofit) {
+                        progressDialog.dismiss();
+                        //Actualizar lista
+
+                        agregarFoto(response.body());
+
+                        Toast.makeText(getContext(), "Imagen Subida correctamente", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Log.e("Upload", t.getMessage());
+                        progressDialog.dismiss();
+                        Toast.makeText(getContext(), "Error al subir imagen", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+
+            }
+        }else{
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+    public static String getPathFromCameraData(Intent data, Context context) {
+        Uri selectedImage = data.getData();
+        String[] filePathColumn = { MediaStore.Images.Media.DATA };
+        Cursor cursor = context.getContentResolver().query(selectedImage,
+                filePathColumn, null, null, null);
+        cursor.moveToFirst();
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        String picturePath = cursor.getString(columnIndex);
+        cursor.close();
+        return picturePath;
     }
 }

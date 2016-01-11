@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,16 +12,21 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     >
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="10dp"
         android:layout_margin="20dp"
         card_view:cardCornerRadius="4dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,19 +35,73 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                style="@style/Base.TextAppearance.AppCompat.Title"
                 android:text="@string/titleCardInfo"
                 android:id="@+id/textView" />
 
             <TextView
+                android:layout_below="@id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/textoCardInfo"
-                android:id="@+id/textViewInformacion" />
+                android:id="@+id/textViewInformacion"
+                android:ellipsize="end"
+                android:maxLines="5"/>
 
-        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewInformacion"
+            android:layout_centerHorizontal="true"
+            style="@style/Base.TextAppearance.AppCompat.Menu"
+            android:gravity="center"
+            android:text="Mas"/>
+        </RelativeLayout>
     </android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="10dp"
+
+        android:layout_margin="20dp"
+        app:cardCornerRadius="4dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trabajo de prueba"
+                style="@style/Base.TextAppearance.AppCompat.Title"
+                android:id="@+id/tv_nombre"/>
+                <com.google.android.gms.maps.MapView
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/map_view"
+                    android:layout_width="match_parent"
+                    android:elevation="2dp"
+                    android:layout_height="148dp"
+                    android:layout_below="@+id/tv_nombre"
+                    app:liteMode="true"
+                    app:mapType="normal" />
+                <ImageButton
+                    android:id="@+id/btn_editar"
+                    android:layout_width="80dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/map_view"
+                    android:scaleType="fitEnd"
+                    style="@style/Base.Widget.AppCompat.ActionButton.CloseMode"
+                    android:src="@drawable/transcribe" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>
 </android.support.v4.widget.NestedScrollView>
 
 

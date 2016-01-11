@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.google.android.gms.maps.MapView;
 import com.grupo2tbd.thinkink.Rest.Galeria;
 import com.grupo2tbd.thinkink.Rest.ServiceGenerator;
 import com.grupo2tbd.thinkink.Rest.UploadImage;
@@ -49,7 +50,6 @@ import retrofit.Retrofit;
  */
 public class PerfilTatuador extends AppCompatActivity {
 
-    private static final int IMAGE_PICKER_SELECT = 100;
     private ProgressDialog progressDialog;
     public static final String Preferencias = "ThinkInk";
     private ViewPager pager;
@@ -74,7 +74,8 @@ public class PerfilTatuador extends AppCompatActivity {
 
         TabLayout tabs = (TabLayout) findViewById(R.id.tabsViewpager);
         tabs.setupWithViewPager(pager);
-        FloatingActionButton subir = (FloatingActionButton) findViewById(R.id.subirFoto);
+        /*FloatingActionButton subir = (FloatingActionButton) findViewById(R.id.subirFoto);
+
         subir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +84,8 @@ public class PerfilTatuador extends AppCompatActivity {
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(e, IMAGE_PICKER_SELECT);
             }
-        });
+        });*/
+
 
     }
 
@@ -117,56 +119,7 @@ public class PerfilTatuador extends AppCompatActivity {
             return 2;
         }
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == IMAGE_PICKER_SELECT
-                && resultCode == Activity.RESULT_OK) {
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("Subiendo Imagen....");
-            progressDialog.setCancelable(false);
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.show();
-            String path = getPathFromCameraData(data, this);
-            Log.i("PICTURE", "Path: " + path);
-            if (path != null) {
-                /*SendFoto send = new SendFoto(getContext(), path);
-                send.execute();*/
 
-                UploadImage service =
-                        ServiceGenerator.createService(UploadImage.class);
-
-                File file = new File(path);
-
-                RequestBody requestBody =
-                        RequestBody.create(MediaType.parse("multipart/form-data"), file);
-                int idUsuario = getIntent().getIntExtra("id", -1);
-                Log.e("IDDD", ""+idUsuario);
-
-                Call<Galeria.Foto> call = service.upload(requestBody, idUsuario);
-                call.enqueue(new Callback<Galeria.Foto>() {
-                    @Override
-                    public void onResponse(Response<Galeria.Foto> response, Retrofit retrofit) {
-                        progressDialog.dismiss();
-                        //Actualizar lista
-                        ((Picture_list)((MyPagerAdapter)pager.getAdapter()).getItem(1)).agregarFoto(response.body());
-
-                        Toast.makeText(PerfilTatuador.this, "Imagen Subida correctamente", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure(Throwable t) {
-                        Log.e("Upload", t.getMessage());
-                        progressDialog.dismiss();
-                        Toast.makeText(PerfilTatuador.this, "Error al subir imagen", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-
-
-            }
-        }
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -192,17 +145,7 @@ public class PerfilTatuador extends AppCompatActivity {
         }
     }
 
-    public static String getPathFromCameraData(Intent data, Context context) {
-        Uri selectedImage = data.getData();
-        String[] filePathColumn = { MediaStore.Images.Media.DATA };
-        Cursor cursor = context.getContentResolver().query(selectedImage,
-                filePathColumn, null, null, null);
-        cursor.moveToFirst();
-        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-        String picturePath = cursor.getString(columnIndex);
-        cursor.close();
-        return picturePath;
-    }
+
 
 
 

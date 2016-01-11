@@ -11,7 +11,7 @@ import retrofit.Retrofit;
  */
 public class ServiceGenerator {
 
-    public static final String API_BASE_URL = "http://192.168.43.148:8080/Think-INK/rest/";
+    public static final String API_BASE_URL = "http://192.168.0.9:8080/Think-INK/rest/";
 
     private static OkHttpClient httpClient = new OkHttpClient();
     private static Retrofit.Builder builder =

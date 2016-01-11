@@ -41,7 +41,7 @@ public class GalleryAdapterRV extends RecyclerView.Adapter<GalleryAdapterRV.Foto
         Galeria.Foto ci = listaFotos.get(i);
         contactViewHolder.vName.setText(ci.nombre);
         contactViewHolder.vFecha.setText(ci.fecha);
-        String url = "http://192.168.0.3:8080/Think-INK/verFoto/"+ci.idFoto;
+        String url = "http://192.168.0.9:8080/Think-INK/verFoto/"+ci.idFoto;
         //Picasso.with(c).load(R.drawable.fondoamarillo).resize(600, 200).centerInside().into(contactViewHolder.foto);
         Picasso.with(c).load(url).resize(600, 200).centerInside().placeholder(R.drawable.placeholder).into(contactViewHolder.foto);
 
