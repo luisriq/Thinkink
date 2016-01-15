@@ -29,4 +29,8 @@ public interface Usuario {
     @Headers( "Content-Type: application/json" )
     @POST("verPerfil")
     Call<Galeria.Usuario> perfil(@Body HashMap<String, Integer> sJsonBody) ;
+
+    @Headers( "Content-Type: application/json" )
+    @POST("crearTrabajo")
+    Call<HashMap<String, String>> crearTrabajo( @Body HashMap<String, String> sJsonBody ) ;
 }

@@ -12,10 +12,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -30,9 +36,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.grupo2tbd.thinkink.PerfilTatuador;
 import com.grupo2tbd.thinkink.R;
 import com.grupo2tbd.thinkink.Rest.Galeria;
+import com.grupo2tbd.thinkink.Rest.ServiceGenerator;
 import com.grupo2tbd.thinkink.Rest.ServiceGeneratorRest;
 import com.grupo2tbd.thinkink.Rest.Usuario;
 import com.kogitune.activity_transition.fragment.FragmentTransitionLauncher;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -48,15 +58,56 @@ import retrofit.Retrofit;
 public class InformacionPerfilFragment extends android.support.v4.app.Fragment implements OnMapReadyCallback {
 
     static int PLACE_PICKER_REQUEST = 1;
-    LatLng loc =  new LatLng(-33.4445011, -70.650879);
+    LatLng loc;
     private MapView mapView;
+    private RequestQueue requestQueue;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.info_tatuador, container,false);
         final TextView info = (TextView) v.findViewById(R.id.textViewInformacion);
+        final TextView local = (TextView) v.findViewById(R.id.tv_nombre);
         Usuario loginService = ServiceGeneratorRest.createService(Usuario.class);
         HashMap<String, Integer> user = new HashMap<>();
+
+        JSONObject jo= new JSONObject();
+        try {
+            jo.put("idUsuario", getArguments().getInt("id"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.e("holahgygygygyligyliygig",jo.toString());
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                ServiceGenerator.IP+":8080/Think-INK/trabajo/Prueba2",
+                jo,
+                new com.android.volley.Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.e(response.toString(),response.toString());
+                        Toast.makeText(getContext(),response.toString(),Toast.LENGTH_LONG).show();
+                        try {
+                            String nombreLocal = response.getString("nombreLocal");
+                            Double latitud = response.getDouble("latitud");
+                            Double longitud = response.getDouble("longitud");
+                            loc = new LatLng(latitud,longitud);
+                            mapView.getMapAsync(InformacionPerfilFragment.this);
+                            local.setText(nombreLocal);
+                            Log.e("POS", "latitud "+latitud+" longitud "+longitud);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new com.android.volley.Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                }
+        );
+        requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(jsonObjReq);
+
 
         user.put("idUsuario", getArguments().getInt("id"));
         Call<Galeria.Usuario> call = loginService.perfil(user);
@@ -83,15 +134,14 @@ public class InformacionPerfilFragment extends android.support.v4.app.Fragment i
         mapView = (MapView) v.findViewById(R.id.map_view);
 
         mapView.onCreate(null);
-        // Set the map ready callback to receive the GoogleMap object
-        mapView.getMapAsync(this);
         ImageButton editar = (ImageButton) v.findViewById(R.id.btn_editar);
 
         editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();//
-                builder.setLatLngBounds(new LatLngBounds(new LatLng(loc.latitude, loc.longitude - 0.05d), new LatLng(loc.latitude, loc.longitude + 0.05d)));
+                if (loc != null){
+                builder.setLatLngBounds(new LatLngBounds(new LatLng(loc.latitude, loc.longitude - 0.05d), new LatLng(loc.latitude, loc.longitude + 0.05d)));}
                 try {
                     startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
                 } catch (GooglePlayServicesRepairableException e) {
@@ -157,10 +207,17 @@ public class InformacionPerfilFragment extends android.support.v4.app.Fragment i
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
-                Place place = PlacePicker.getPlace( getActivity(), data);
+                Place place = PlacePicker.getPlace(getActivity(), data);
                 String toastMsg = String.format("Place: %s", place.getName());
                 Toast.makeText(getActivity(), toastMsg, Toast.LENGTH_LONG).show();
+                LocalDialogFragment lcdf = new LocalDialogFragment();
                 loc = place.getLatLng();
+                Bundle bundle = new Bundle();
+                bundle.putDouble("lat", loc.latitude);
+                bundle.putDouble("lng", loc.longitude);
+                bundle.putInt("idUsuario", getArguments().getInt("id"));
+                lcdf.setArguments(bundle);
+                lcdf.show(getFragmentManager(),"asda");
                 mapView.getMapAsync(this);
             }
         }

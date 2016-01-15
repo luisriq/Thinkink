@@ -19,4 +19,9 @@
     <string name="textoCardInfo">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</string>
     <string name="action_salir">Salir</string>
     <string name="editar">Editar</string>
+    <string name="localTitle">Confirmación del local</string>
+    <string name="localAcept">Aceptar</string>
+    <string name="localCancel">Cancelar</string>
+    <string name="tag">fsadf</string>
+    <string name="local_name">Nombre del local</string>
 </resources>

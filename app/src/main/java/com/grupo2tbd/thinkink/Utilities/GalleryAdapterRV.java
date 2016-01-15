@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.grupo2tbd.thinkink.R;
 import com.grupo2tbd.thinkink.Rest.Galeria;
+import com.grupo2tbd.thinkink.Rest.ServiceGenerator;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -41,15 +42,17 @@ public class GalleryAdapterRV extends RecyclerView.Adapter<GalleryAdapterRV.Foto
         Galeria.Foto ci = listaFotos.get(i);
         contactViewHolder.vName.setText(ci.nombre);
         contactViewHolder.vFecha.setText(ci.fecha);
-        String url = "http://192.168.0.9:8080/Think-INK/verFoto/"+ci.idFoto;
+        String url = ServiceGenerator.IP+":8080/Think-INK/verFoto/"+ci.idFoto;
         //Picasso.with(c).load(R.drawable.fondoamarillo).resize(600, 200).centerInside().into(contactViewHolder.foto);
-        Picasso.with(c).load(url).resize(600, 200).centerInside().placeholder(R.drawable.placeholder).into(contactViewHolder.foto);
-
-        /*Glide.with(c)
-                .load(R.drawable.tatuaje).thumbnail(0.5f)
+        //Picasso.with(c).load(url).resize(600, 200).centerInside().placeholder(R.drawable.placeholder).into(contactViewHolder.foto);
+        contactViewHolder.foto.setMaxHeight(500);
+        contactViewHolder.foto.setMinimumHeight(500);
+        Glide.with(c)
+                .load(url).thumbnail(0.5f)
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(contactViewHolder.foto);*/
+                .centerCrop()
+                .into(contactViewHolder.foto);
         /*Glide.with(c)
                 .load(R.drawable.fondoamarillo)
                 .centerCrop()
