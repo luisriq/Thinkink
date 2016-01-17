@@ -208,7 +208,7 @@ public class InformacionPerfilFragment extends android.support.v4.app.Fragment i
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
                 Place place = PlacePicker.getPlace(getActivity(), data);
-                String toastMsg = String.format("Place: %s", place.getName());
+                String toastMsg = String.format(" %s", place.getName());
                 Toast.makeText(getActivity(), toastMsg, Toast.LENGTH_LONG).show();
                 LocalDialogFragment lcdf = new LocalDialogFragment();
                 loc = place.getLatLng();

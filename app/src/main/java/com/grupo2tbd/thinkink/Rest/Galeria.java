@@ -17,11 +17,15 @@ public class Galeria {
         public String fecha;
         public int idUsuario;
         public String nombre;
-        public Foto(int idFoto, String fecha, int idUsuario, String nombre) {
+        public int cantidadMegusta;
+        public boolean like;
+        public Foto(int idFoto, String fecha, int idUsuario, String nombre, int cantidadMegusta, boolean like) {
             this.idFoto = idFoto;
             this.fecha = fecha;
             this.idUsuario = idUsuario;
             this.nombre = nombre;
+            this.cantidadMegusta = cantidadMegusta;
+            this.like = like;
         }
     }
 
