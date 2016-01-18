@@ -1,5 +1,7 @@
 package com.grupo2tbd.thinkink.Utilities;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnticipateInterpolator;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -19,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.bartoszlipinski.viewpropertyobjectanimator.ViewPropertyObjectAnimator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.grupo2tbd.thinkink.R;
@@ -56,11 +60,11 @@ public class GalleryAdapterRV extends RecyclerView.Adapter<GalleryAdapterRV.Foto
     @Override
     public void onBindViewHolder(final FotoViewHolder contactViewHolder, int i) {
         final Galeria.Foto ci = listaFotos.get(i);
-        //contactViewHolder.cantidadLikes.setText(ci.cantidadMegusta);
+        contactViewHolder.cantidadLikes.setText(""+ci.cantidadMegusta);
         contactViewHolder.vName.setText(ci.nombre);
         contactViewHolder.vFecha.setText(ci.fecha);
+
         if (ci.likeAble){
-            contactViewHolder.like.setClickable(true);
             Glide.with(c)
                     .load(R.drawable.like_gris)
                     .centerCrop()
@@ -68,7 +72,6 @@ public class GalleryAdapterRV extends RecyclerView.Adapter<GalleryAdapterRV.Foto
                     .into(contactViewHolder.like);
         }
         else {
-            contactViewHolder.like.setClickable(false);
             Glide.with(c)
                     .load(R.drawable.like_333)
                     .centerCrop()
@@ -83,13 +86,43 @@ public class GalleryAdapterRV extends RecyclerView.Adapter<GalleryAdapterRV.Foto
         contactViewHolder.foto.setMinimumHeight(500);
         contactViewHolder.like.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 JSONObject jo = new JSONObject();
                 try {
                     jo.put("idUsuario", ci.idUsuario);
                     jo.put("idFoto", ci.idFoto);
 
                     Log.e(jo.toString(), "ms");
+                    String e = "layout_height";
+                    ObjectAnimator anim = ViewPropertyObjectAnimator
+                            .animate(v)
+                            .withLayer()
+                            .scaleX(1.5f)
+                            .scaleY(1.5f)
+                            .setDuration(300)
+                            .get();
+                    anim.start();
+                    anim.addListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {}
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            ViewPropertyObjectAnimator
+                                    .animate(v)
+                                    .withLayer()
+                                    .scaleX(1.0f)
+                                    .scaleY(1.0f)
+                                    .setDuration(300)
+                                    .get().start();
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {}
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {}
+                    });
                     if (ci.likeAble) {
                         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                                 ServiceGenerator.IP + ":8080/Think-INK/megusta/guardar",
@@ -97,44 +130,23 @@ public class GalleryAdapterRV extends RecyclerView.Adapter<GalleryAdapterRV.Foto
                                 new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
+
                                         contactViewHolder.like.setClickable(false);
-                                        contactViewHolder.cantidadLikes.setText((ci.cantidadMegusta + 1));
+                                        contactViewHolder.cantidadLikes.setText("" + (ci.cantidadMegusta + 1));
                                         Glide.with(c)
                                                 .load(R.drawable.like_333)
                                                 .centerCrop()
                                                 .fitCenter()
                                                 .into(contactViewHolder.like);
                                         Log.e("post ", "like guardado");
+                                        Log.e("post ", response.toString());
+                                        ci.likeAble = false;
                                     }
                                 },
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                    }
-                                }
-                        );
-                        requestQueue = Volley.newRequestQueue(c);
-                        requestQueue.add(jsonObjReq);
-                    }
-                    else{
-                        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                                ServiceGenerator.IP + ":8080/Think-INK/megusta/eliminar",
-                                jo,
-                                new Response.Listener<JSONObject>() {
-                                    @Override
-                                    public void onResponse(JSONObject response) {
-                                        contactViewHolder.cantidadLikes.setText((ci.cantidadMegusta - 1));
-                                        Glide.with(c)
-                                                .load(R.drawable.like_gris)
-                                                .centerCrop()
-                                                .fitCenter()
-                                                .into(contactViewHolder.like);
-                                        Log.e("post ", "like borrado");
-                                    }
-                                },
-                                new Response.ErrorListener() {
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
+                                        error.printStackTrace();
                                     }
                                 }
                         );
@@ -149,6 +161,7 @@ public class GalleryAdapterRV extends RecyclerView.Adapter<GalleryAdapterRV.Foto
         });
         Glide.with(c)
                 .load(url).thumbnail(0.5f)
+                .placeholder(R.drawable.placeholder)
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()

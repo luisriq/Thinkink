@@ -10,7 +10,7 @@ import retrofit.Retrofit;
  * Created by luis on 12/20/15.
  */
 public class ServiceGenerator {
-    public static final String IP = "http://192.168.1.82";
+    public static final String IP = "http://192.168.0.9";
     public static final String API_BASE_URL = IP+":8080/Think-INK/rest/";
 
 

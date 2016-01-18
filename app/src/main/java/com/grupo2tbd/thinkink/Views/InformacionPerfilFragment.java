@@ -1,18 +1,14 @@
 package com.grupo2tbd.thinkink.Views;
 
-import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +35,6 @@ import com.grupo2tbd.thinkink.Rest.Galeria;
 import com.grupo2tbd.thinkink.Rest.ServiceGenerator;
 import com.grupo2tbd.thinkink.Rest.ServiceGeneratorRest;
 import com.grupo2tbd.thinkink.Rest.Usuario;
-import com.kogitune.activity_transition.fragment.FragmentTransitionLauncher;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,12 +56,12 @@ public class InformacionPerfilFragment extends android.support.v4.app.Fragment i
     LatLng loc;
     private MapView mapView;
     private RequestQueue requestQueue;
-
+    private TextView local;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.info_tatuador, container,false);
         final TextView info = (TextView) v.findViewById(R.id.textViewInformacion);
-        final TextView local = (TextView) v.findViewById(R.id.tv_nombre);
+        local = (TextView) v.findViewById(R.id.tv_nombre);
         Usuario loginService = ServiceGeneratorRest.createService(Usuario.class);
         HashMap<String, Integer> user = new HashMap<>();
 
@@ -78,13 +73,12 @@ public class InformacionPerfilFragment extends android.support.v4.app.Fragment i
         }
         Log.e("holahgygygygyligyliygig",jo.toString());
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                ServiceGenerator.IP+":8080/Think-INK/trabajo/Prueba2",
+                ServiceGenerator.IP+":8080/Think-INK/trabajo/obtenerTrabajo",
                 jo,
                 new com.android.volley.Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.e(response.toString(),response.toString());
-                        Toast.makeText(getContext(),response.toString(),Toast.LENGTH_LONG).show();
+                        Log.e(response.toString(), response.toString());
                         try {
                             String nombreLocal = response.getString("nombreLocal");
                             Double latitud = response.getDouble("latitud");
@@ -115,10 +109,10 @@ public class InformacionPerfilFragment extends android.support.v4.app.Fragment i
 
             @Override
             public void onResponse(Response<Galeria.Usuario> response, Retrofit retrofit) {
-                if(response.body().descripcion!=null){
+                if (response.body().descripcion != null) {
                     info.setText(response.body().descripcion);
                 }
-                ((PerfilTatuador)getActivity()).collapsingToolbarLayout.setTitle(response.body().nombreUsuario);
+                ((PerfilTatuador) getActivity()).collapsingToolbarLayout.setTitle(response.body().nombreUsuario);
 
 
             }
@@ -211,6 +205,18 @@ public class InformacionPerfilFragment extends android.support.v4.app.Fragment i
                 String toastMsg = String.format(" %s", place.getName());
                 Toast.makeText(getActivity(), toastMsg, Toast.LENGTH_LONG).show();
                 LocalDialogFragment lcdf = new LocalDialogFragment();
+                lcdf.setOnCloseListener(new MyDialogCloseListener() {
+                    @Override
+                    public String acpetar(String nombreLocal) {
+                        local.setText(nombreLocal);
+                        return null;
+                    }
+
+                    @Override
+                    public String cancelar() {
+                        return null;
+                    }
+                });
                 loc = place.getLatLng();
                 Bundle bundle = new Bundle();
                 bundle.putDouble("lat", loc.latitude);
@@ -221,5 +227,12 @@ public class InformacionPerfilFragment extends android.support.v4.app.Fragment i
                 mapView.getMapAsync(this);
             }
         }
+    }
+
+
+    public interface MyDialogCloseListener
+    {
+        public String acpetar(String nombreLocal);//or whatever args you want
+        public String cancelar();
     }
 }

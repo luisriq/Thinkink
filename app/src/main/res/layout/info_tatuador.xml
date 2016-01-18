@@ -51,6 +51,7 @@
                 android:maxLines="5"/>
 
         <TextView
+            android:id="@+id/expander"
             android:layout_width="match_parent"
             android:layout_marginTop="10dp"
             android:layout_height="wrap_content"

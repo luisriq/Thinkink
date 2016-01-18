@@ -66,8 +66,11 @@ public class PerfilTatuador extends AppCompatActivity {
         Fresco.initialize(getApplicationContext(), config);
         setContentView(R.layout.perfil_tatuador);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
+
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbarLayout.setTitle("");
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
         pager = (ViewPager) findViewById(R.id.viewPagerPerfil);
         pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
@@ -107,7 +110,7 @@ public class PerfilTatuador extends AppCompatActivity {
             switch(position) {
 
                 case 0: return "Información";
-                case 1: return "Galería 1";
+                case 1: return "Galería";
                 case 2: return "Galería 2";
                 case 3: return "Mapa";
                 default: return "Información";

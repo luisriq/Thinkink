@@ -44,7 +44,7 @@ public class LocalDialogFragment extends android.support.v4.app.DialogFragment i
     private MapView mapView;
     private LatLng loc;
     private RequestQueue requestQueue;
-
+    private InformacionPerfilFragment.MyDialogCloseListener listener;
 
 
     @Override
@@ -64,13 +64,18 @@ public class LocalDialogFragment extends android.support.v4.app.DialogFragment i
 
                 .setPositiveButton(R.string.localAcept, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        JSONObject jo= new JSONObject();
+                        final JSONObject jo= new JSONObject();
                         try {
                             jo.put("idUsuario", getArguments().getInt("idUsuario"));
                             EditText et = (EditText) v.findViewById(R.id.nombre_local);
                             jo.put("nombreLocal",et.getText());
                             jo.put("latitud", String.valueOf(lat));
                             jo.put("longitud", String.valueOf(lng));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            listener.acpetar(jo.getString("nombreLocal"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -81,12 +86,14 @@ public class LocalDialogFragment extends android.support.v4.app.DialogFragment i
                                 new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
-                                        Toast.makeText(getContext(), response.toString()+"funciona", Toast.LENGTH_LONG).show();
+
+
                                     }
                                 },
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
+                                        error.printStackTrace();
                                     }
                                 }
                         );
@@ -109,5 +116,9 @@ public class LocalDialogFragment extends android.support.v4.app.DialogFragment i
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15f));
 
         googleMap.addMarker(new MarkerOptions().position(loc));
+    }
+
+    public void setOnCloseListener(InformacionPerfilFragment.MyDialogCloseListener listener) {
+        this.listener = listener;
     }
 }
