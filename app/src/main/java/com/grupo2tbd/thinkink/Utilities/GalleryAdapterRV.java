@@ -56,10 +56,11 @@ public class GalleryAdapterRV extends RecyclerView.Adapter<GalleryAdapterRV.Foto
     @Override
     public void onBindViewHolder(final FotoViewHolder contactViewHolder, int i) {
         final Galeria.Foto ci = listaFotos.get(i);
-        contactViewHolder.cantidadLikes.setText(ci.cantidadMegusta);
+        //contactViewHolder.cantidadLikes.setText(ci.cantidadMegusta);
         contactViewHolder.vName.setText(ci.nombre);
         contactViewHolder.vFecha.setText(ci.fecha);
-        if (ci.like){
+        if (ci.likeAble){
+            contactViewHolder.like.setClickable(true);
             Glide.with(c)
                     .load(R.drawable.like_gris)
                     .centerCrop()
@@ -67,6 +68,7 @@ public class GalleryAdapterRV extends RecyclerView.Adapter<GalleryAdapterRV.Foto
                     .into(contactViewHolder.like);
         }
         else {
+            contactViewHolder.like.setClickable(false);
             Glide.with(c)
                     .load(R.drawable.like_333)
                     .centerCrop()
@@ -88,13 +90,14 @@ public class GalleryAdapterRV extends RecyclerView.Adapter<GalleryAdapterRV.Foto
                     jo.put("idFoto", ci.idFoto);
 
                     Log.e(jo.toString(), "ms");
-                    if (ci.like == false) {
+                    if (ci.likeAble) {
                         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                                 ServiceGenerator.IP + ":8080/Think-INK/megusta/guardar",
                                 jo,
                                 new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
+                                        contactViewHolder.like.setClickable(false);
                                         contactViewHolder.cantidadLikes.setText((ci.cantidadMegusta + 1));
                                         Glide.with(c)
                                                 .load(R.drawable.like_333)
