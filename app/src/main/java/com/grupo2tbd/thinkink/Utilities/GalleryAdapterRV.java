@@ -130,9 +130,9 @@ public class GalleryAdapterRV extends RecyclerView.Adapter<GalleryAdapterRV.Foto
                                 new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
-
+                                        ci.cantidadMegusta = ci.cantidadMegusta + 1;
                                         contactViewHolder.like.setClickable(false);
-                                        contactViewHolder.cantidadLikes.setText("" + (ci.cantidadMegusta + 1));
+                                        contactViewHolder.cantidadLikes.setText("" + (ci.cantidadMegusta));
                                         Glide.with(c)
                                                 .load(R.drawable.like_333)
                                                 .centerCrop()
